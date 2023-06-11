@@ -1,0 +1,68 @@
+package Analizador;
+
+import EDD.AVLUsuarios;
+import EDD.ListaIMGs;
+import EDD.NodoUsuario;
+import EDD.NodoIMG;
+import java_cup.runtime.*;
+
+parser code
+{:
+AVLUsuarios arbol;
+ListaIMGs lista;
+NodoUsuario usuario;
+NodoIMG aux;
+public void insertarEDD(AVLUsuarios arbol, ListaIMGs lista){
+    this.arbol = arbol; 
+    this.lista = lista;
+}
+
+public void syntax_error(Symbol s)
+{
+System.err.println("El analizador se recupero tras el error\nError en la Línea" + (s.right+1) +" Columna "+(s.left+1)+ ". Identificador "+s.value + " no reconocido." );
+}
+/**Metodo al que se llama en el momento en que ya no es posible una recuperación de
+errores.*/
+public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
+System.err.println("El analizador No se recupero tras el error\nError en la Línea" + (s.right+1)+ "Columna "+(s.left+1)+". Identificador " +
+s.value + " no reconocido.");
+}
+
+:}
+
+
+/*Terminales*/
+terminal String id, entero;
+terminal String c, dp, pc;
+/*
+* Aquí están los no terminales
+*/
+non terminal INICIO;
+non terminal CUERPO, LISTA;
+non terminal String TIPO; // No terminales de tipo String
+/* Precedencia */
+
+/* Definición de la gramatica
+*/
+start with INICIO; // indicamos con qué producción debe empezar la gramatica.
+
+INICIO::= TIPO:a dp {:usuario = new NodoUsuario(a);:} CUERPO pc {:arbol.insertar(usuario);:} INICIO
+         |;
+
+TIPO::= entero:a {:RESULT=a;:}
+        |id:a {:RESULT=a;:};
+
+CUERPO::= entero:a {:if(lista.existe(a)){
+                        aux = new NodoIMG(a);
+                        aux.setCapas(lista.getNodo(a).getCapas());
+                        usuario.getImgs().insertar(aux);
+                    }:}LISTA
+         |;
+
+
+LISTA::= c entero:a {:if(lista.existe(a)){
+                        aux = new NodoIMG(a);
+                        aux.setCapas(lista.getNodo(a).getCapas());
+                        usuario.getImgs().insertar(aux);
+                    }:}LISTA
+        |;

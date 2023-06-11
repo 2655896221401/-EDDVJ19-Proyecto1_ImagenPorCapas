@@ -1,0 +1,60 @@
+package Analizador;
+
+import EDD.ABB_Capas;
+import EDD.NodoABB;
+import EDD.Matriz; // Paquete
+import java_cup.runtime.*;
+
+parser code
+{:
+ABB_Capas arbol;
+Matriz m;
+int id;
+public void insertABB(ABB_Capas arbol){
+    this.arbol = arbol; 
+}
+
+
+public void syntax_error(Symbol s)
+{
+System.err.println("El analizador se recupero tras el error\nError en la Línea" + (s.right+1) +" Columna "+(s.left+1)+ ". Identificador "+s.value + " no reconocido." );
+}
+/**Metodo al que se llama en el momento en que ya no es posible una recuperación de
+errores.*/
+public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
+System.err.println("El analizador No se recupero tras el error\nError en la Línea" + (s.right+1)+ "Columna "+(s.left+1)+". Identificador " +
+s.value + " no reconocido.");
+}
+
+:}
+
+
+/*Terminales*/
+terminal String entero, color;
+terminal String pc, c, lla, llc;
+/*
+* Aquí están los no terminales
+*/
+non terminal INICIO;
+non terminal CAPA, CUERPO; // No terminales de tipo String
+/* Precedencia */
+
+/* Definición de la gramatica
+*/
+start with INICIO; // indicamos con qué producción debe empezar la gramatica.
+
+INICIO::= CAPA INICIO
+         |;
+
+CAPA::= entero:a lla {:id = Integer.parseInt(a); m = new Matriz(id);:} CUERPO llc {:arbol.insertar(new NodoABB(m));:};
+    CUERPO::= entero:a c entero:b c color:c pc {:
+                try{
+                    int ma = Integer.parseInt(a);
+                    int mb = Integer.parseInt(b);
+                    if(c=="") m.insertar(ma,mb,"#FFFFFF");
+                    else m.insertar(ma,mb,c);
+                }catch(Exception e){
+                    System.out.println("Error al cargar una fila");
+                }
+                :} CUERPO
+             |;

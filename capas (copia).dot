@@ -1,0 +1,22 @@
+digraph{
+    subgraph cluster_1{
+        n1;
+        n2;
+        n3;
+        n2->n1;
+        n2->n3;
+    }
+
+    subgraph cluster_2{
+        a;
+        a1;
+        a2;
+        a3;
+        a->a1;
+        a1->a2;
+        a2->a3;
+        a1->n1;
+        a2->n2;
+        a3->n3;
+    }
+}

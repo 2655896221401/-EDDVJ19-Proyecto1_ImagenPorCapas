@@ -1,0 +1,37 @@
+digraph{
+nc[label="Matriz", shape=box];
+subgraph cluster_mcab{
+label="Cabeceras";style=filled;
+color=lightgrey;
+n1697239273[label="1", shape=box];
+}subgraph cluster_mlat{
+label="Laterales";style=filled;
+color=lightgrey;
+n705178760[label="1", shape=box];
+n1295457144[label="2", shape=box];
+n45987085[label="3", shape=box];
+}subgraph cluster_cuerpo{
+label="Cuerpo";style=filled;
+color=cornsilk1;
+n699958059[label="#ff0000", shape=box];
+n1111463672[label="#ff0000", shape=box];
+n925280540[label="#ff0000", shape=box];
+}n1697239273->n699958059;
+n705178760->n1295457144;
+n1295457144->n705178760;
+n705178760->n699958059[constraint=false];
+n1295457144->n45987085;
+n45987085->n1295457144;
+n1295457144->n1111463672[constraint=false];
+n45987085->n925280540[constraint=false];
+n699958059->n1111463672;
+n1111463672->n699958059;
+n1111463672->n699958059;
+n699958059->n1111463672;
+n1111463672->n925280540;
+n925280540->n1111463672;
+n925280540->n1111463672;
+n1111463672->n925280540;
+nc->n1697239273[constraint=false];
+nc->n705178760;
+}

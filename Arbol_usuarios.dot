@@ -1,0 +1,15 @@
+digraph{
+ node[shape = box];
+ label="Arbol de capas";
+n2024923064[label="userM"];
+n974766301[label="userB"];
+n256801560[label="userA"];
+n1117885634[label="userC"];
+n874237745[label="userY"];
+n1081142855[label="userZ"];
+n2024923064->n974766301;
+n974766301->n256801560;
+n974766301->n1117885634;
+n2024923064->n874237745;
+n874237745->n1081142855;
+}

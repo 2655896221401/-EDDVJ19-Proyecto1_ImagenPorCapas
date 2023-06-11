@@ -1,0 +1,71 @@
+package Analizador;
+
+import EDD.ABB_Capas;
+import EDD.ListaIMGs;
+import EDD.NodoABB;
+import EDD.NodoCapa;
+import EDD.NodoIMG;
+
+import java_cup.runtime.*;
+
+parser code
+{:
+ABB_Capas arbol;
+ListaIMGs lista;
+NodoIMG imagen;
+NodoABB nodo;
+public void insertarEDD(ABB_Capas arbol, ListaIMGs lista){
+    this.arbol = arbol; 
+    this.lista = lista;
+}
+
+public void syntax_error(Symbol s)
+{
+System.err.println("El analizador se recupero tras el error\nError en la Línea" + (s.right+1) +" Columna "+(s.left+1)+ ". Identificador "+s.value + " no reconocido." );
+}
+/**Metodo al que se llama en el momento en que ya no es posible una recuperación de
+errores.*/
+public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
+System.err.println("El analizador No se recupero tras el error\nError en la Línea" + (s.right+1)+ "Columna "+(s.left+1)+". Identificador " +
+s.value + " no reconocido.");
+}
+
+:}
+
+
+/*Terminales*/
+terminal String id, entero;
+terminal String c, lla, llc;
+/*
+* Aquí están los no terminales
+*/
+non terminal INICIO;
+non terminal CUERPO, LISTA;
+non terminal String TIPO; // No terminales de tipo String
+/* Precedencia */
+
+/* Definición de la gramatica
+*/
+start with INICIO; // indicamos con qué producción debe empezar la gramatica.
+
+INICIO::= TIPO:a {:imagen = new NodoIMG(a);:} lla CUERPO llc {:lista.insertar(imagen);:} INICIO
+          |;
+
+TIPO::= entero:a {:RESULT=a;:}
+        |id:a {:RESULT=a;:};
+
+CUERPO::= entero:a {:int ida = Integer.parseInt(a);
+                    if(arbol.existe(ida)){
+                        imagen.getCapas().insertar(new NodoCapa(arbol.getNodo(ida).getM()));
+                    }else{
+                        System.out.println("no existe:" + ida);
+                    }:} LISTA
+          |;
+
+LISTA::= c entero:a {:int ida = Integer.parseInt(a);
+                    if(arbol.existe(ida)){
+                        imagen.getCapas().insertar(new NodoCapa(arbol.getNodo(ida).getM()));
+                    }else{
+                        System.out.println("no existe:" + ida);
+                    }:} LISTA
+         |;

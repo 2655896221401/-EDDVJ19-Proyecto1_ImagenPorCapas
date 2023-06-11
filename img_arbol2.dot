@@ -1,0 +1,27 @@
+digraph{
+ node[shape = box];
+ label="Imagen y Arbol de capas";
+subgraph cluster_arbol{
+ node[shape = box];
+ label="Arbol de capas";
+n283028888[label="capa: 6"];
+n1196025219[label="capa: 5"];
+n506416745[label="capa: 4"];
+n1062990720[label="capa: 8"];
+n1510751134[label="capa: 7"];
+n1382131873[label="capa: 9"];
+n283028888->n1196025219;
+n1196025219->n506416745;
+n283028888->n1062990720;
+n1062990720->n1510751134;
+n1062990720->n1382131873;
+}subgraph cluster_lista{
+label="Imagen";
+n1615504568[label="imagen: 2"];
+n903755853[label="capa: 7", style=rounded, color=red];
+n475082011[label="capa: 8", style=rounded, color=red];
+n1615504568->n903755853;
+n903755853->n475082011;
+n903755853->n1510751134;
+n475082011->n1062990720;
+}}
